@@ -1,0 +1,139 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../polymer/lib/elements/dom-if.html">
+<link rel="import" href="../ib-item/ib-item.html">
+<link rel="import" href="../ib-icon-button/ib-icon-button.html">
+
+<dom-module id="ib-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: lightskyblue;
+      }
+      .list-container {
+        margin: auto;
+      }
+      .list-header ib-item {
+        --ib-item-container: {
+          border-top-left-radius: 0.8rem;
+          border-top-right-radius: 0.8rem;
+          background-color: lawngreen;
+        };
+      }
+      .list-body {
+        background-color: white;
+        border-bottom-left-radius: 0.8rem;
+        border-bottom-right-radius: 0.8rem;
+      }
+      .list-body ib-item {
+        --ib-item-container: {
+          border-bottom-left-radius: 0.8rem;
+          border-bottom-right-radius: 0.8rem;
+        };
+      }
+      .default{
+        --ib-item-slot-content: {
+          text-align: center;
+        };
+        --ib-item-sufix: {
+          display: none;
+        };
+      }
+      ib-icon-button {
+        --ib-icon-button-button-width: 1.5rem;
+        --ib-icon-button-button-height: 1.5rem;
+        --ib-icon-button-button: {
+          background-color: transparent;
+        };
+      }
+    </style>
+
+    <div class="list-container">
+      <div class="list-header">
+        <ib-item>
+          <p slot="content">ToDo list by Iron Bit</p>
+          <div slot="sufix">
+            <ib-icon-button src="../assets/recycle-bin.svg" alt="Delete all" on-click="_deleteAll"></ib-icon-button>
+          </div>
+        </ib-item>
+      </div>
+      <div class="list-body">
+        <template is="dom-if" if="[[isItemsEmpty]]">
+          <ib-item class="default">
+            <p slot="content">[[defaultItem]]</p>
+          </ib-item>
+        </template>
+        <template is="dom-repeat" items="{{items}}">
+          <ib-item index="[[index]]">
+            <p slot="content">{{item.activity}}</p>
+            <div slot="sufix">
+              <ib-icon-button src="../assets/remove.svg" alt="Delete"></ib-icon-button>
+            </div>
+          </ib-item>
+        </template>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `ib-list`
+     * Componente ib-list
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class IbList extends Polymer.Element {
+      static get is() { return 'ib-list'; }
+      static get properties() {
+        return {
+          items: {
+            type: Array,
+            value() {
+              return [];
+            },
+            notify: true
+          },
+          defaultItem: {
+            type: String,
+            value: ''
+          },
+          isItemsEmpty: {
+            type: Boolean,
+            computed: '_isItemsEmpty(items)'
+          }
+        };
+      }
+
+      ready(){
+        super .ready();
+        this.addEventListener('sufix-event', this._deleteItem)
+      }
+
+      _deleteItem(e){
+        let index = e.detail.index;
+        if(index != undefined){
+          this.items.splice(index, 1);
+          let a = this.items.slice();
+          this.items = a.slice();
+        }
+      }
+
+      _deleteAll(e){
+        this.items = [];
+      }
+
+      _isItemsEmpty(items) {
+        let empty = false;
+        if(items.length == 0){
+          empty = true;
+        }
+        return empty;
+      }
+    }
+
+    window.customElements.define(IbList.is, IbList);
+  </script>
+</dom-module>

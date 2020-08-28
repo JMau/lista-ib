@@ -1,0 +1,19 @@
+{
+  "name": "ib-list",
+  "description": "Componente ib-list",
+  "main": "ib-list.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "ib-item": "https://github.com/JMau/ib-item.git#1.0.1",
+    "ib-icon-button": "JMau/ib-icon-button#1.0.0",
+    "ib-input": "JMau/ib-input#1.0.0"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}
